@@ -62,17 +62,17 @@ SCHEDULE_OPTIONS = {
 # 4. DATAS DE INÍCIO
 # =============================================================================
 START_DATE_OPTIONS = {
-    "1": "08/06/2026",  # Segunda e Quarta
-    "2": "09/06/2026",  # Terça e Quinta
+    "1": "08/06/2026",
+    "2": "09/06/2026",
 }
 
 # =============================================================================
 # 5. DATAS DE ENCERRAMENTO
 # =============================================================================
 END_DATE_OPTIONS = {
-    "1": "08/07/2026",  # Segunda e Quarta
-    "2": "09/07/2026",  # Terça e Quinta
-    "3": "09/06/2026",  # Opção 2.2 encerramento especial
+    "1": "08/07/2026",
+    "2": "09/07/2026",
+    "3": "09/06/2026",
 }
 
 # =============================================================================
@@ -85,27 +85,63 @@ ADDRESS_OPTIONS = {
 # =============================================================================
 # 7. TURMAS
 # =============================================================================
-# Estrutura: curso_id, local_id, turma_codigo, agenda_id, periodo_id, encerramento_id, endereco_id
+# Cada turma tem um id único. O campo "turma_label" é o que aparece no select
+# de turma quando há mais de uma opção para o mesmo curso.
 TURMA_OPTIONS = [
-    # CAMAREIRO
-    {"id": "1", "curso_id": "1", "local_id": "1", "turma_codigo": "CAM-CG-01", "agenda_id": "1", "periodo_id": "1", "encerramento_id": "1", "endereco_id": "1"},
-    {"id": "2", "curso_id": "1", "local_id": "1", "turma_codigo": "CAM-CG-02", "agenda_id": "4", "periodo_id": "2", "encerramento_id": "2", "endereco_id": "1"},
-    # AGENTE DE TURISMO CORPORATIVO
-    {"id": "3", "curso_id": "2", "local_id": "1", "turma_codigo": "ATC-CG-01", "agenda_id": "2", "periodo_id": "1", "encerramento_id": "1", "endereco_id": "1"},
-    {"id": "4", "curso_id": "2", "local_id": "1", "turma_codigo": "ATC-CG-02", "agenda_id": "6", "periodo_id": "2", "encerramento_id": "3", "endereco_id": "1"},
-    # ORIENTADOR DE HOTELARIA
-    {"id": "5", "curso_id": "3", "local_id": "1", "turma_codigo": "OH-CG-01",  "agenda_id": "3", "periodo_id": "1", "encerramento_id": "1", "endereco_id": "1"},
-    {"id": "6", "curso_id": "3", "local_id": "1", "turma_codigo": "OH-CG-02",  "agenda_id": "5", "periodo_id": "2", "encerramento_id": "2", "endereco_id": "1"},
-    # MONITOR DE LAZER E RECREAÇÃO
-    {"id": "7", "curso_id": "4", "local_id": "1", "turma_codigo": "MLR-CG-01", "agenda_id": "7", "periodo_id": "2", "encerramento_id": "2", "endereco_id": "1"},
+    # CAMAREIRO — 2 turmas
+    {
+        "id": "1", "curso_id": "1", "local_id": "1",
+        "turma_codigo": "CAM-CG-01",
+        "turma_label": "Seg/Qua — 9h às 11h (início 08/06)",
+        "agenda_id": "1", "periodo_id": "1", "encerramento_id": "1", "endereco_id": "1",
+    },
+    {
+        "id": "2", "curso_id": "1", "local_id": "1",
+        "turma_codigo": "CAM-CG-02",
+        "turma_label": "Ter/Qui — 09h às 11h (início 09/06)",
+        "agenda_id": "4", "periodo_id": "2", "encerramento_id": "2", "endereco_id": "1",
+    },
+    # AGENTE DE TURISMO CORPORATIVO — 2 turmas
+    {
+        "id": "3", "curso_id": "2", "local_id": "1",
+        "turma_codigo": "ATC-CG-01",
+        "turma_label": "Seg/Qua — 13h às 15h (início 08/06)",
+        "agenda_id": "2", "periodo_id": "1", "encerramento_id": "1", "endereco_id": "1",
+    },
+    {
+        "id": "4", "curso_id": "2", "local_id": "1",
+        "turma_codigo": "ATC-CG-02",
+        "turma_label": "Ter/Qui — 16h às 18h (início 09/06)",
+        "agenda_id": "6", "periodo_id": "2", "encerramento_id": "3", "endereco_id": "1",
+    },
+    # ORIENTADOR DE HOTELARIA — 2 turmas
+    {
+        "id": "5", "curso_id": "3", "local_id": "1",
+        "turma_codigo": "OH-CG-01",
+        "turma_label": "Seg/Qua — 16h às 18h (início 08/06)",
+        "agenda_id": "3", "periodo_id": "1", "encerramento_id": "1", "endereco_id": "1",
+    },
+    {
+        "id": "6", "curso_id": "3", "local_id": "1",
+        "turma_codigo": "OH-CG-02",
+        "turma_label": "Ter/Qui — 13h às 15h (início 09/06)",
+        "agenda_id": "5", "periodo_id": "2", "encerramento_id": "2", "endereco_id": "1",
+    },
+    # MONITOR DE LAZER E RECREAÇÃO — 1 turma
+    {
+        "id": "7", "curso_id": "4", "local_id": "1",
+        "turma_codigo": "MLR-CG-01",
+        "turma_label": "Ter/Qui — 19h às 21h (início 09/06)",
+        "agenda_id": "7", "periodo_id": "2", "encerramento_id": "2", "endereco_id": "1",
+    },
 ]
 
 # =============================================================================
-# 8. FUNÇÕES AUXILIARES PARA MONTAR AS OPÇÕES DE TURMA
+# 8. FUNÇÕES AUXILIARES
 # =============================================================================
 def build_course_options():
-    local_by_id   = {opt["id"]: opt for opt in LOCAL_OPTIONS}
-    course_by_id  = {opt["id"]: opt for opt in COURSE_CATALOG}
+    local_by_id  = {opt["id"]: opt for opt in LOCAL_OPTIONS}
+    course_by_id = {opt["id"]: opt for opt in COURSE_CATALOG}
     options = []
     for t in TURMA_OPTIONS:
         local    = local_by_id[t["local_id"]]
@@ -115,6 +151,7 @@ def build_course_options():
             "id":             t["id"],
             "curso_id":       t["curso_id"],
             "local_id":       t["local_id"],
+            "turma_label":    t["turma_label"],
             "local":          local["nome"],
             "curso":          course["nome"],
             "turma":          f"{t['turma_codigo']} - {course['nome']}",
@@ -135,19 +172,12 @@ COURSE_INFO          = COURSE_OPTIONS[0] if COURSE_OPTIONS else None
 def build_whatsapp_share_url(home_url):
     message = (
         "Acabei de me inscrever em uma oportunidade de qualificacao profissional. "
-        "Confira aqui: "
-        f"{home_url}"
+        "Confira aqui: " + home_url
     )
     return f"https://wa.me/?text={quote(message)}"
 
 def get_course_option(option_id):
     return COURSE_OPTIONS_BY_ID.get(str(option_id or ""))
-
-def get_local_option(local_id):
-    return LOCAL_OPTIONS_BY_ID.get(str(local_id or ""))
-
-def get_course_catalog_option(course_id):
-    return COURSE_CATALOG_BY_ID.get(str(course_id or ""))
 
 def fill_form_data_from_option(form_data, option):
     form_data["local_id"]       = option["local_id"]
@@ -163,23 +193,16 @@ def fill_form_data_from_option(form_data, option):
     form_data["endereco_curso"] = option["endereco_curso"]
 
 def fill_form_data_from_selection(form_data):
-    """
-    Dado local_id + curso_id + opcao_id, preenche os campos derivados.
-    Primeiro tenta usar o opcao_id diretamente; se não, busca pela
-    combinação local + curso.
-    """
     opcao_id = form_data.get("opcao_id")
     local_id = form_data.get("local_id")
     curso_id = form_data.get("curso_id")
 
-    # Tenta pelo opcao_id direto
     if opcao_id:
         matched = COURSE_OPTIONS_BY_ID.get(str(opcao_id))
         if matched:
             fill_form_data_from_option(form_data, matched)
             return
 
-    # Fallback: primeira turma da combinação local + curso
     if local_id and curso_id:
         matched = next(
             (o for o in COURSE_OPTIONS
@@ -303,13 +326,6 @@ TEMPLATE_WIZARD = r'''
             border-radius: 34px;
             box-shadow: var(--sombra-card);
             overflow: hidden;
-        }
-
-        .wizard-panel[data-step="index"] .hero-card,
-        .wizard-panel[data-step="dados"] .step-card,
-        .wizard-panel[data-step="escolher"] .step-card,
-        .wizard-panel[data-step="revisao"] .step-card {
-            max-width: 760px; margin: 0 auto;
         }
 
         .wizard-panel { display: none; padding: 18px 8px; animation: surgir 0.28s ease; }
@@ -591,42 +607,6 @@ TEMPLATE_WIZARD = r'''
             box-shadow: 0 0 0 4px rgba(17, 85, 204, 0.12) !important;
         }
 
-        /* Turma selector cards */
-        .turma-selector { display: grid; gap: 10px; margin-top: 8px; }
-
-        .turma-card {
-            padding: 14px 16px; border-radius: 16px;
-            border: 2px solid #d7e3fb; background: #fff;
-            cursor: pointer; text-align: left;
-            transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .turma-card:hover {
-            border-color: var(--cor-principal);
-            background: var(--cor-clara);
-        }
-
-        .turma-card.selecionada {
-            border-color: var(--cor-principal);
-            background: var(--cor-clara);
-            box-shadow: 0 0 0 3px rgba(17, 85, 204, 0.18);
-        }
-
-        .turma-card-title {
-            font-weight: 800; color: var(--cor-principal);
-            font-size: 0.98rem; margin-bottom: 6px;
-        }
-
-        .turma-card-details {
-            display: flex; flex-wrap: wrap; gap: 6px;
-        }
-
-        .turma-badge {
-            padding: 3px 10px; border-radius: 999px;
-            background: #dbe6fb; color: #2f5fb4;
-            font-size: 0.82rem; font-weight: 700;
-        }
-
         .review-layout {
             display: grid; grid-template-columns: 1fr;
             gap: 8px; margin-top: 10px;
@@ -693,7 +673,6 @@ TEMPLATE_WIZARD = r'''
             .step-grid.step-grid--stacked {
                 grid-template-columns: minmax(0, 1fr); max-width: 540px;
             }
-            .wizard-panel[data-step="escolher"] .step-grid.step-grid--stacked { max-width: 470px; }
         }
 
         @media (max-width: 640px) {
@@ -899,6 +878,13 @@ TEMPLATE_WIZARD = r'''
 
                         <div class="step-grid step-grid--stacked">
 
+                            <!-- Local: único, exibido como input readonly -->
+                            <div class="form-group full">
+                                <label for="local_display_top">Local *</label>
+                                <input type="text" id="local_display_top" class="readonly-field" readonly value="{{ local_options[0].nome if local_options else '' }}">
+                            </div>
+
+                            <!-- Curso -->
                             <div class="form-group full">
                                 <label for="curso_id">Curso *</label>
                                 <select id="curso_id" name="curso_id">
@@ -910,46 +896,49 @@ TEMPLATE_WIZARD = r'''
                                 <div class="balao-erro" id="curso_id-error" {% if not errors.get('curso_id') %}hidden{% endif %}>{{ errors.get('curso_id', '') }}</div>
                             </div>
 
-                            <!-- Seletor de turmas (aparece após escolher curso) -->
-                            <div class="form-group full" id="turma-selector-container" style="display:none;">
-                                <label>Escolha o horário *</label>
-                                <div class="turma-selector" id="turma-selector"></div>
+                            <!-- Turma (aparece quando há mais de uma opção para o curso) -->
+                            <div class="form-group full" id="turma-group" style="display:none;">
+                                <label for="opcao_id_select">Turma / Horário *</label>
+                                <select id="opcao_id_select">
+                                    <option value="">Selecione uma turma</option>
+                                </select>
                                 <div class="balao-erro" id="opcao_id-error" hidden></div>
                             </div>
 
-                            <!-- Hidden fields preenchidos via JS -->
+                            <!-- Hidden fields -->
                             <input type="hidden" id="opcao_id"  name="opcao_id"  value="{{ form_data.get('opcao_id', '') }}">
                             <input type="hidden" id="local_id"  name="local_id"  value="{{ form_data.get('local_id', '') }}">
                             <input type="hidden" id="local"     name="local"     value="{{ form_data.get('local', '') }}">
                             <input type="hidden" id="curso"     name="curso"     value="{{ form_data.get('curso', '') }}">
                             <input type="hidden" id="turma"     name="turma"     value="{{ form_data.get('turma', '') }}">
 
-                            <div class="form-group full" id="info-fields" style="display:none;">
+                            <!-- Campos informativos readonly -->
+                            <div class="form-group full">
                                 <label for="local_display">LOCAL SELECIONADO</label>
                                 <input type="text" id="local_display" class="readonly-field" readonly value="{{ form_data.get('local', '') }}">
                             </div>
 
-                            <div class="form-group" id="info-dias" style="display:none;">
+                            <div class="form-group">
                                 <label for="dias_aula">DIA DE AULA</label>
                                 <input type="text" id="dias_aula" name="dias_aula" class="readonly-field" readonly value="{{ form_data.get('dias_aula', '') }}">
                             </div>
 
-                            <div class="form-group" id="info-horario" style="display:none;">
+                            <div class="form-group">
                                 <label for="horario">HORÁRIO</label>
                                 <input type="text" id="horario" name="horario" class="readonly-field" readonly value="{{ form_data.get('horario', '') }}">
                             </div>
 
-                            <div class="form-group" id="info-inicio" style="display:none;">
+                            <div class="form-group">
                                 <label for="data_inicio">DATA DE INÍCIO</label>
                                 <input type="text" id="data_inicio" name="data_inicio" class="readonly-field" readonly value="{{ form_data.get('data_inicio', '') }}">
                             </div>
 
-                            <div class="form-group" id="info-encerramento" style="display:none;">
+                            <div class="form-group">
                                 <label for="encerramento">ENCERRAMENTO</label>
                                 <input type="text" id="encerramento" name="encerramento" class="readonly-field" readonly value="{{ form_data.get('encerramento', '') }}">
                             </div>
 
-                            <div class="form-group full" id="info-endereco" style="display:none;">
+                            <div class="form-group full">
                                 <label for="endereco_curso">ENDEREÇO</label>
                                 <div class="input-with-action">
                                     <input type="text" id="endereco_curso" name="endereco_curso" class="readonly-field" readonly value="{{ form_data.get('endereco_curso', '') }}">
@@ -989,8 +978,8 @@ TEMPLATE_WIZARD = r'''
                             <div class="review-box">
                                 <div class="review-title">Informações do curso</div>
                                 <div class="review-list">
-                                    <div class="review-item"><strong>Curso</strong><span data-review="curso"></span></div>
-                                    <div class="review-item"><strong>Local</strong><span data-review="local_display"></span></div>
+                                    <div class="review-item"><strong>Curso</strong><span data-review="curso_nome"></span></div>
+                                    <div class="review-item"><strong>Local</strong><span data-review="local_nome"></span></div>
                                     <div class="review-item"><strong>Dia</strong><span data-review="dias_aula"></span></div>
                                     <div class="review-item"><strong>Horário</strong><span data-review="horario"></span></div>
                                     <div class="review-item"><strong>Início</strong><span data-review="data_inicio"></span></div>
@@ -1055,14 +1044,13 @@ TEMPLATE_WIZARD = r'''
             var benefitsSliders = Array.from(document.querySelectorAll('[data-benefits-slider]'));
 
             // Dados injetados pelo servidor
-            var courseCatalog    = {{ course_catalog|tojson }};
-            var courseOptions    = {{ course_options|tojson }};
+            var courseCatalog = {{ course_catalog|tojson }};
+            var courseOptions = {{ course_options|tojson }};
+            var localOptions  = {{ local_options|tojson }};
 
-            // Índices rápidos
-            var courseCatalogById = Object.fromEntries(courseCatalog.map(function(c){ return [String(c.id), c]; }));
             var courseOptionsById = Object.fromEntries(courseOptions.map(function(o){ return [String(o.id), o]; }));
 
-            // Elementos de formulário — dados pessoais
+            // ── Elementos — dados pessoais
             var nomeInput          = document.getElementById('nome');
             var generoInput        = document.getElementById('genero');
             var cpfInput           = document.getElementById('cpf');
@@ -1073,30 +1061,25 @@ TEMPLATE_WIZARD = r'''
             var emailInput         = document.getElementById('email');
             var confirmaDadosInput = document.getElementById('confirma_dados');
 
-            // Elementos de formulário — escolha do curso
-            var courseSelect       = document.getElementById('curso_id');
-            var opcaoIdInput       = document.getElementById('opcao_id');
-            var localIdInput       = document.getElementById('local_id');
-            var localInput         = document.getElementById('local');
-            var localDisplay       = document.getElementById('local_display');
-            var cursoInput         = document.getElementById('curso');
-            var turmaInput         = document.getElementById('turma');
-            var diasAulaInput      = document.getElementById('dias_aula');
-            var horarioInput       = document.getElementById('horario');
-            var dataInicioInput    = document.getElementById('data_inicio');
-            var encerramentoInput  = document.getElementById('encerramento');
-            var enderecoInput      = document.getElementById('endereco_curso');
-            var turmaSelectorContainer = document.getElementById('turma-selector-container');
-            var turmaSelector      = document.getElementById('turma-selector');
-            var btnCopiarEndereco  = document.getElementById('btn-copiar-endereco');
+            // ── Elementos — escolha do curso
+            var courseSelect      = document.getElementById('curso_id');
+            var opcaoSelectEl     = document.getElementById('opcao_id_select');
+            var turmaGroup        = document.getElementById('turma-group');
+            var opcaoIdInput      = document.getElementById('opcao_id');
+            var localIdInput      = document.getElementById('local_id');
+            var localInput        = document.getElementById('local');
+            var localDisplay      = document.getElementById('local_display');
+            var cursoInput        = document.getElementById('curso');
+            var turmaInput        = document.getElementById('turma');
+            var diasAulaInput     = document.getElementById('dias_aula');
+            var horarioInput      = document.getElementById('horario');
+            var dataInicioInput   = document.getElementById('data_inicio');
+            var encerramentoInput = document.getElementById('encerramento');
+            var enderecoInput     = document.getElementById('endereco_curso');
+            var btnCopiarEndereco = document.getElementById('btn-copiar-endereco');
 
-            // Painéis de info (mostrados após turma selecionada)
-            var infoFields     = document.getElementById('info-fields');
-            var infoDias       = document.getElementById('info-dias');
-            var infoHorario    = document.getElementById('info-horario');
-            var infoInicio     = document.getElementById('info-inicio');
-            var infoEncerramento = document.getElementById('info-encerramento');
-            var infoEndereco   = document.getElementById('info-endereco');
+            // O local é único — preenche de imediato
+            var unicoLocal = localOptions[0] || null;
 
             function somenteDigitos(v) { return (v || '').replace(/\D/g, ''); }
 
@@ -1107,20 +1090,14 @@ TEMPLATE_WIZARD = r'''
                 if (err)  { err.textContent = msg || ''; err.hidden = !msg; }
             }
 
-            // ── Mostrar / ocultar campos de info da turma ──
-            function mostrarInfoTurma(visivel) {
-                var els = [infoFields, infoDias, infoHorario, infoInicio, infoEncerramento, infoEndereco];
-                els.forEach(function(el){ if (el) el.style.display = visivel ? '' : 'none'; });
-            }
-
-            // ── Aplicar opção de turma aos campos hidden/readonly ──
+            // ── Aplica uma opcao de turma aos campos readonly ──
             function aplicarOpcao(opcaoId) {
                 var op = courseOptionsById[String(opcaoId || '')];
                 if (!op) {
-                    if (opcaoIdInput)  opcaoIdInput.value  = '';
-                    if (localIdInput)  localIdInput.value  = '';
-                    localInput.value        = '';
-                    if (localDisplay)  localDisplay.value  = '';
+                    opcaoIdInput.value      = '';
+                    localIdInput.value      = unicoLocal ? unicoLocal.id : '';
+                    localInput.value        = unicoLocal ? unicoLocal.nome : '';
+                    if (localDisplay) localDisplay.value = unicoLocal ? unicoLocal.nome : '';
                     cursoInput.value        = '';
                     turmaInput.value        = '';
                     diasAulaInput.value     = '';
@@ -1128,14 +1105,12 @@ TEMPLATE_WIZARD = r'''
                     dataInicioInput.value   = '';
                     encerramentoInput.value = '';
                     enderecoInput.value     = '';
-                    mostrarInfoTurma(false);
                     return;
                 }
-
-                if (opcaoIdInput)  opcaoIdInput.value  = op.id;
-                if (localIdInput)  localIdInput.value  = op.local_id;
+                opcaoIdInput.value      = op.id;
+                localIdInput.value      = op.local_id;
                 localInput.value        = op.local;
-                if (localDisplay)  localDisplay.value  = op.local;
+                if (localDisplay) localDisplay.value = op.local;
                 cursoInput.value        = op.curso;
                 turmaInput.value        = op.turma;
                 diasAulaInput.value     = op.dias_aula;
@@ -1143,83 +1118,75 @@ TEMPLATE_WIZARD = r'''
                 dataInicioInput.value   = op.data_inicio;
                 encerramentoInput.value = op.encerramento;
                 enderecoInput.value     = op.endereco_curso;
-
                 setError('curso_id', '');
                 setError('opcao_id', '');
-                mostrarInfoTurma(true);
                 syncReview();
             }
 
-            // ── Renderizar cards de turma para o curso selecionado ──
-            function renderizarTurmas(cursoId, selectedOpcaoId) {
-                turmaSelector.innerHTML = '';
-
+            // ── Atualiza o select de turmas quando curso muda ──
+            function atualizarTurmasPorCurso(cursoId, selectedOpcaoId) {
                 var turmasDoCurso = courseOptions.filter(function(o){
                     return String(o.curso_id) === String(cursoId || '');
                 });
 
-                if (!turmasDoCurso.length) {
-                    turmaSelectorContainer.style.display = 'none';
+                opcaoSelectEl.innerHTML = '';
+
+                if (turmasDoCurso.length === 0) {
+                    turmaGroup.style.display = 'none';
                     aplicarOpcao('');
                     return;
                 }
 
-                turmaSelectorContainer.style.display = '';
+                if (turmasDoCurso.length === 1) {
+                    // Somente uma turma: oculta o select e aplica direto
+                    turmaGroup.style.display = 'none';
+                    aplicarOpcao(turmasDoCurso[0].id);
+                    return;
+                }
 
-                turmasDoCurso.forEach(function(op, idx) {
-                    var card = document.createElement('div');
-                    card.className = 'turma-card' + (String(op.id) === String(selectedOpcaoId || '') ? ' selecionada' : '');
-                    card.dataset.opcaoId = op.id;
+                // Mais de uma turma: mostra o select
+                turmaGroup.style.display = '';
+                var placeholder = document.createElement('option');
+                placeholder.value = '';
+                placeholder.textContent = 'Selecione uma turma';
+                opcaoSelectEl.appendChild(placeholder);
 
-                    var label = 'Opção ' + (idx + 1);
-                    card.innerHTML =
-                        '<div class="turma-card-title">' + label + ' — ' + op.dias_aula + '</div>' +
-                        '<div class="turma-card-details">' +
-                            '<span class="turma-badge">⏰ ' + op.horario + '</span>' +
-                            '<span class="turma-badge">📅 Início: ' + op.data_inicio + '</span>' +
-                            '<span class="turma-badge">🏁 Término: ' + op.encerramento + '</span>' +
-                        '</div>';
-
-                    card.addEventListener('click', function() {
-                        Array.from(turmaSelector.querySelectorAll('.turma-card'))
-                            .forEach(function(c){ c.classList.remove('selecionada'); });
-                        card.classList.add('selecionada');
-                        aplicarOpcao(op.id);
-                    });
-
-                    turmaSelector.appendChild(card);
-
-                    // Seleciona automaticamente se era a opção já salva, ou a única turma
-                    if (String(op.id) === String(selectedOpcaoId || '') ||
-                        (!selectedOpcaoId && turmasDoCurso.length === 1)) {
-                        card.classList.add('selecionada');
-                        aplicarOpcao(op.id);
+                turmasDoCurso.forEach(function(op) {
+                    var opt = document.createElement('option');
+                    opt.value = op.id;
+                    opt.textContent = op.turma_label;
+                    if (String(op.id) === String(selectedOpcaoId || '')) {
+                        opt.selected = true;
                     }
+                    opcaoSelectEl.appendChild(opt);
                 });
 
-                // Se nenhuma estava selecionada e há mais de uma, limpa
-                var algumaSelecionada = turmasDoCurso.some(function(o){
-                    return String(o.id) === String(selectedOpcaoId || '');
-                });
-                if (!algumaSelecionada && turmasDoCurso.length > 1) {
+                // Se havia uma seleção prévia válida, aplica
+                if (selectedOpcaoId && turmasDoCurso.some(function(o){ return String(o.id) === String(selectedOpcaoId); })) {
+                    aplicarOpcao(selectedOpcaoId);
+                } else {
                     aplicarOpcao('');
                 }
             }
 
-            // ── Evento: troca de curso ──
+            // ── Eventos ──
             courseSelect.addEventListener('change', function() {
                 setError('curso_id', '');
                 var cursoId = courseSelect.value;
                 if (cursoId) {
-                    renderizarTurmas(cursoId, '');
+                    atualizarTurmasPorCurso(cursoId, '');
                 } else {
-                    turmaSelectorContainer.style.display = 'none';
+                    turmaGroup.style.display = 'none';
                     aplicarOpcao('');
                 }
                 syncReview();
             });
 
-            // ── Copiar endereço ──
+            opcaoSelectEl.addEventListener('change', function() {
+                setError('opcao_id', '');
+                aplicarOpcao(opcaoSelectEl.value);
+            });
+
             if (btnCopiarEndereco && enderecoInput) {
                 btnCopiarEndereco.addEventListener('click', function() {
                     navigator.clipboard.writeText(enderecoInput.value).then(function(){
@@ -1241,16 +1208,21 @@ TEMPLATE_WIZARD = r'''
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
 
-            // ── Sincronizar painel de revisão ──
+            // ── Sincronizar revisão ──
             function syncReview() {
                 reviewTargets.forEach(function(target){
-                    var fieldId = target.dataset.review;
-                    // local_display vem do campo hidden "local"
-                    if (fieldId === 'local_display') {
-                        target.textContent = (localInput ? localInput.value.trim() : '');
+                    var key = target.dataset.review;
+
+                    if (key === 'curso_nome') {
+                        target.textContent = cursoInput ? cursoInput.value.trim() : '';
                         return;
                     }
-                    var field = document.getElementById(fieldId);
+                    if (key === 'local_nome') {
+                        target.textContent = localInput ? localInput.value.trim() : '';
+                        return;
+                    }
+
+                    var field = document.getElementById(key);
                     if (!field) { target.textContent = ''; return; }
                     if (field.tagName === 'SELECT') {
                         var sel = field.options[field.selectedIndex];
@@ -1259,13 +1231,9 @@ TEMPLATE_WIZARD = r'''
                         target.textContent = field.value.trim();
                     }
                 });
-
-                // Garante que "curso" na revisão use o hidden
-                var revCurso = document.querySelector('[data-review="curso"]');
-                if (revCurso && cursoInput) revCurso.textContent = cursoInput.value.trim();
             }
 
-            /* ── Validações ── */
+            // ── Validações ──
             function validarCPF(cpf){
                 var d = somenteDigitos(cpf);
                 if (d.length !== 11 || /^(\d)\1+$/.test(d)) return false;
@@ -1278,11 +1246,9 @@ TEMPLATE_WIZARD = r'''
                 dig = (soma * 10) % 11; if (dig === 10) dig = 0;
                 return dig === Number(d[10]);
             }
-
             function validarEmail(e){
                 return /^[a-zA-Z0-9_.+-]+@((gmail|hotmail|outlook|yahoo)\.(com|com\.br))$/i.test((e || '').trim());
             }
-
             function idadePermitida(v){
                 var p = (v || '').split('/');
                 if (p.length !== 3) return false;
@@ -1294,7 +1260,6 @@ TEMPLATE_WIZARD = r'''
                 if (hoje.getMonth() - d.getMonth() < 0 || (hoje.getMonth() === d.getMonth() && hoje.getDate() < d.getDate())) idade--;
                 return idade >= 16 && idade <= 90;
             }
-
             function validarDDD(w){
                 var d = somenteDigitos(w);
                 if (d.length < 11) return false;
@@ -1304,7 +1269,6 @@ TEMPLATE_WIZARD = r'''
                         '71','73','74','75','77','79','81','82','83','84','85','86','87','88','89',
                         '91','92','93','94','95','96','97','98','99'].includes(d.slice(0, 2));
             }
-
             function mascCPF(){
                 var v = somenteDigitos(cpfInput.value).slice(0, 11);
                 if (v.length > 9) v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
@@ -1329,7 +1293,6 @@ TEMPLATE_WIZARD = r'''
                 if (v.length > 5) v = v.replace(/(\d{5})(\d{1,3})/, '$1-$2');
                 cepInput.value = v;
             }
-
             function vNome(){
                 var v = nomeInput.value.trim();
                 if (!v) { setError('nome','Digite seu nome completo.'); return false; }
@@ -1370,7 +1333,6 @@ TEMPLATE_WIZARD = r'''
                 if (!validarEmail(emailInput.value)) { setError('email','Digite um e-mail válido (Gmail, Hotmail, Outlook ou Yahoo).'); return false; }
                 setError('email',''); return true;
             }
-
             function validarPassoDados(){
                 var checks = [
                     { ok: vNome(),   f: nomeInput },
@@ -1386,24 +1348,25 @@ TEMPLATE_WIZARD = r'''
                 if (first) { first.f.focus(); return false; }
                 return true;
             }
-
             function validarPassoEscolher(){
                 if (!courseSelect.value) {
                     setError('curso_id','Selecione um curso.'); courseSelect.focus(); return false;
                 }
-                if (!opcaoIdInput || !opcaoIdInput.value) {
-                    setError('opcao_id','Selecione um horário para o curso.'); return false;
+                // Se o select de turma está visível, precisa ter algo selecionado
+                if (turmaGroup.style.display !== 'none' && !opcaoSelectEl.value) {
+                    setError('opcao_id','Selecione uma turma.'); opcaoSelectEl.focus(); return false;
+                }
+                if (!opcaoIdInput.value) {
+                    setError('curso_id','Não foi possível determinar a turma. Tente novamente.'); return false;
                 }
                 return true;
             }
-
             function validarPassoRevisao(){
                 if (!confirmaDadosInput.checked) {
                     setError('confirma_dados','Confirme os dados para finalizar.'); confirmaDadosInput.focus(); return false;
                 }
                 setError('confirma_dados',''); return true;
             }
-
             async function buscarBairro(){
                 var limpo = somenteDigitos(cepInput.value);
                 if (limpo.length !== 8) return;
@@ -1424,11 +1387,9 @@ TEMPLATE_WIZARD = r'''
                     mostrarPasso(target);
                 });
             });
-
             document.querySelectorAll('[data-prev]').forEach(function(btn){
                 btn.addEventListener('click', function(){ syncReview(); mostrarPasso(btn.dataset.prev); });
             });
-
             form.addEventListener('submit', function(e){
                 if (!validarPassoDados()) { e.preventDefault(); mostrarPasso('dados'); return; }
                 syncReview();
@@ -1463,23 +1424,20 @@ TEMPLATE_WIZARD = r'''
             confirmaDadosInput.addEventListener('change', function(){
                 if (confirmaDadosInput.checked) setError('confirma_dados','');
             });
-
             ['nome','genero','whatsapp','cep','bairro','email','curso_id','como_conheceu'].forEach(function(id){
                 var f = document.getElementById(id);
                 if (f) { f.addEventListener('input', syncReview); f.addEventListener('change', syncReview); }
             });
 
-            /* ── Slider de benefícios ── */
+            // ── Slider de benefícios ──
             function initBenefitsSlider(slider) {
                 var slides   = Array.from(slider.querySelectorAll('.benefit-slide'));
                 var dotsHost = slider.querySelector('[data-benefits-dots]');
                 var prevBtn  = slider.querySelector('[data-benefits-prev]');
                 var nextBtn  = slider.querySelector('[data-benefits-next]');
                 if (!slides.length || !dotsHost || !prevBtn || !nextBtn) return;
-
                 var cur = Math.max(slides.findIndex(function(s){ return s.classList.contains('ativo'); }), 0);
                 var timer;
-
                 var dots = slides.map(function(_, i){
                     var dot = document.createElement('button');
                     dot.type = 'button'; dot.className = 'benefits-dot';
@@ -1487,36 +1445,38 @@ TEMPLATE_WIZARD = r'''
                     dot.addEventListener('click', function(){ show(i); restart(); });
                     dotsHost.appendChild(dot); return dot;
                 });
-
                 function show(i) {
                     cur = (i + slides.length) % slides.length;
                     slides.forEach(function(s, j){ s.classList.toggle('ativo', j === cur); });
                     dots.forEach(function(d, j){ d.classList.toggle('ativo', j === cur); });
                 }
-
                 function restart() {
                     clearInterval(timer);
                     timer = setInterval(function(){ show(cur + 1); }, 3200);
                 }
-
                 prevBtn.addEventListener('click', function(){ show(cur - 1); restart(); });
                 nextBtn.addEventListener('click', function(){ show(cur + 1); restart(); });
                 slider.addEventListener('mouseenter', function(){ clearInterval(timer); });
                 slider.addEventListener('mouseleave', restart);
-
                 show(cur); restart();
             }
 
-            /* ── Inicialização ── */
+            // ── Inicialização ──
             var initCursoId = '{{ form_data.get("curso_id", "") }}';
             var initOpcaoId = '{{ form_data.get("opcao_id", "") }}';
 
+            // Preenche local imediatamente (único local)
+            if (unicoLocal) {
+                localIdInput.value  = unicoLocal.id;
+                localInput.value    = unicoLocal.nome;
+                if (localDisplay) localDisplay.value = unicoLocal.nome;
+            }
+
             if (initCursoId) {
                 courseSelect.value = initCursoId;
-                renderizarTurmas(initCursoId, initOpcaoId);
+                atualizarTurmasPorCurso(initCursoId, initOpcaoId);
             } else {
-                turmaSelectorContainer.style.display = 'none';
-                mostrarInfoTurma(false);
+                turmaGroup.style.display = 'none';
             }
 
             benefitsSliders.forEach(initBenefitsSlider);
@@ -1714,7 +1674,6 @@ def get_default_form_data(source=None):
         "encerramento": "", "endereco_curso": "",
         "como_conheceu": "", "confirma_dados": "",
     }
-
     if source:
         for key in form_data:
             value = source.get(key, form_data[key])
@@ -1722,9 +1681,7 @@ def get_default_form_data(source=None):
                 form_data[key] = "sim" if value else ""
             else:
                 form_data[key] = (value or "").strip()
-
         fill_form_data_from_selection(form_data)
-
     return form_data
 
 def cpf_valido(cpf):
@@ -1762,7 +1719,6 @@ def whatsapp_valido(whatsapp):
 
 def validate_form_data(form_data):
     errors = {}
-
     selected_curso  = form_data.get("curso_id")
     selected_option = get_course_option(form_data.get("opcao_id", ""))
 
@@ -1802,7 +1758,6 @@ def validate_form_data(form_data):
         errors["email"] = "Digite um e-mail válido do Gmail, Hotmail, Outlook ou Yahoo."
     if form_data["confirma_dados"] != "sim":
         errors["confirma_dados"] = "Confirme os dados para finalizar a inscrição."
-
     return errors
 
 def error_step(errors):
@@ -1815,7 +1770,6 @@ def error_step(errors):
 def render_wizard(form_data=None, errors=None, current_step="index"):
     current_form_data = form_data or get_default_form_data()
     selected_option = get_course_option(current_form_data.get("opcao_id")) or COURSE_INFO
-
     return render_template_string(
         TEMPLATE_WIZARD,
         course_info=selected_option,
@@ -1836,7 +1790,6 @@ def home():
 def inscricao_unica():
     if request.method == "GET":
         return redirect(url_for("home"))
-
     form_data = get_default_form_data(request.form)
     errors = validate_form_data(form_data)
     if errors:
@@ -1854,7 +1807,6 @@ def inscricao_unica():
         form_data["horario"], form_data["data_inicio"], form_data["encerramento"],
         form_data["endereco_curso"], form_data["como_conheceu"],
     ]
-
     try:
         append_to_sheet(dados)
     except Exception as exc:
@@ -1880,9 +1832,7 @@ def confirmacao():
     protocolo = session.get("protocolo")
     if not protocolo:
         return redirect(url_for("home"))
-
     home_url = "https://movimenta-rio-mare.onrender.com"
-
     return render_template_string(
         TEMPLATE_CONFIRMACAO,
         protocolo=protocolo,
@@ -1890,7 +1840,7 @@ def confirmacao():
     )
 
 # =============================================================================
-# 11. SUPABASE (ENVIO)
+# 11. SUPABASE
 # =============================================================================
 SUPABASE_FUNCTION_URL = os.environ.get(
     "SUPABASE_FUNCTION_URL",
@@ -1910,15 +1860,15 @@ def normalize_phone_number(phone):
 def send_registration_to_supabase(form_data):
     phone = normalize_phone_number(form_data.get("whatsapp", ""))
     payload = {
-        "name":          form_data.get("nome", ""),
-        "phone":         phone,
-        "curso":         form_data.get("curso", ""),
-        "local":         form_data.get("local", ""),
-        "dia_semana":    form_data.get("dias_aula", ""),
-        "dias_semana":   form_data.get("dias_aula", ""),
-        "data_inicio":   form_data.get("data_inicio", ""),
+        "name":           form_data.get("nome", ""),
+        "phone":          phone,
+        "curso":          form_data.get("curso", ""),
+        "local":          form_data.get("local", ""),
+        "dia_semana":     form_data.get("dias_aula", ""),
+        "dias_semana":    form_data.get("dias_aula", ""),
+        "data_inicio":    form_data.get("data_inicio", ""),
         "data_inscricao": datetime.utcnow().isoformat() + "Z",
-        "horario":       form_data.get("horario", ""),
+        "horario":        form_data.get("horario", ""),
     }
     headers = {
         "Content-Type":  "application/json",
@@ -1928,11 +1878,10 @@ def send_registration_to_supabase(form_data):
     }
     response = requests.post(SUPABASE_FUNCTION_URL, headers=headers, json=payload, timeout=10)
     if not response.ok:
-        raise RuntimeError(
-            f"Supabase retornou {response.status_code}: {response.text[:500]}"
-        )
+        raise RuntimeError(f"Supabase retornou {response.status_code}: {response.text[:500]}")
     return response
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+    
